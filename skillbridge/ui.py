@@ -1,4 +1,4 @@
-"""Look and feel: warm ivory, soft black and a touch of electric teal, plus light animations.
+"""Look and feel: deep warm charcoal, soft ivory and a touch of electric teal.
 
 Everything visual lives here so app.py stays readable. Colours are defined once in PALETTE.
 If Google Fonts can't load (e.g. Wi-Fi off), the browser falls back to a system font.
@@ -7,14 +7,14 @@ If Google Fonts can't load (e.g. Wi-Fi off), the browser falls back to a system 
 import streamlit as st
 
 PALETTE = {
-    "ivory": "#FBF7EF",
-    "ivory_deep": "#F3ECDF",
-    "line": "#E6DCCB",
-    "ink": "#1C1B19",          # soft black
-    "ink_soft": "#5B564D",
-    "teal": "#00899A",         # buttons / links (readable)
+    "ivory": "#1C1B19",
+    "ivory_deep": "#282621",
+    "line": "#454035",
+    "ink": "#F4EFE4",          # warm ivory text
+    "ink_soft": "#C0B8A8",
+    "teal": "#20A9B7",         # buttons / links (readable)
     "teal_bright": "#16D3E2",  # glows and accents (electric)
-    "teal_tint": "#DDF5F6",
+    "teal_tint": "#18383B",
 }
 
 _CSS = """
@@ -102,7 +102,7 @@ a:hover { border-bottom-color: var(--teal-bright); }
 /* ---------- cards: metrics, expanders, charts, tables ---------- */
 [data-testid="stMetric"], [data-testid="stExpander"], [data-testid="stGraphVizChart"],
 [data-testid="stDataFrame"], [data-testid="stVegaLiteChart"], [data-testid="stArrowVegaLiteChart"] {
-  background: #FFFDF8; border: 1px solid var(--line); border-radius: 16px;
+  background: #24221D; border: 1px solid var(--line); border-radius: 16px;
   transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
 }
 [data-testid="stMetric"] { padding: 1rem 1.1rem; }
@@ -128,23 +128,23 @@ a:hover { border-bottom-color: var(--teal-bright); }
 /* ---------- alerts, inputs, checkboxes ---------- */
 [data-testid="stAlert"] { border-radius: 14px; border: 1px solid var(--line); }
 [data-baseweb="input"], [data-baseweb="textarea"], [data-baseweb="select"] > div { border-radius: 12px !important; }
-[data-testid="stFileUploaderDropzone"] { border-radius: 14px; border: 1.5px dashed rgba(0,137,154,.45); background: #FFFDF8; transition: border-color .2s, background .2s; }
+[data-testid="stFileUploaderDropzone"] { border-radius: 14px; border: 1.5px dashed rgba(32,169,183,.6); background: #24221D; transition: border-color .2s, background .2s; }
 [data-testid="stFileUploaderDropzone"]:hover { border-color: var(--teal-bright); background: var(--teal-tint); }
 [data-baseweb="tag"] { background: var(--teal-tint) !important; color: var(--teal) !important; border-radius: 8px !important; }
 
 /* ---------- custom chips & legend ---------- */
 .sb-chip {
   display: inline-block; padding: .28rem .7rem; margin: .18rem .25rem .18rem 0; border-radius: 999px;
-  font-size: .86rem; font-weight: 500; border: 1px solid var(--line); background: #FFFDF8; color: var(--ink);
+  font-size: .86rem; font-weight: 500; border: 1px solid var(--line); background: #24221D; color: var(--ink);
   transition: transform .18s ease, border-color .18s ease;
 }
 .sb-chip:hover { transform: translateY(-2px); border-color: var(--teal); }
-.sb-chip.have { background: var(--teal-tint); border-color: rgba(0,137,154,.3); color: #035E66; }
+.sb-chip.have { background: var(--teal-tint); border-color: rgba(32,169,183,.45); color: #A5E8EC; }
 .sb-legend { display: flex; flex-wrap: wrap; gap: .9rem; font-size: .84rem; color: var(--ink-soft); margin: .3rem 0 1rem; }
 .sb-legend span::before { content: ""; display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: .4rem; vertical-align: -1px; }
 .sb-legend .k::before { background: var(--teal-tint); border: 1px solid rgba(0,137,154,.4); }
 .sb-legend .f::before { background: var(--ink); }
-.sb-legend .p::before { background: var(--ivory-deep); border: 1px solid #CDBFA8; }
+.sb-legend .p::before { background: var(--ivory-deep); border: 1px solid #716B5E; }
 .sb-legend .d::before { background: var(--teal); }
 
 /* ---------- footer ---------- */

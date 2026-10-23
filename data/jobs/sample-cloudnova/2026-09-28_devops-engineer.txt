@@ -1,0 +1,5 @@
+SAMPLE job description for testing SkillBridge AI. Replace with real job descriptions.
+
+DevOps Engineer
+Automate deployments with GitHub Actions. Manage Kubernetes workloads and Docker images.
+Requirements: Linux, Git, Docker, Kubernetes, AWS, Terraform, Python, monitoring with Prometheus.

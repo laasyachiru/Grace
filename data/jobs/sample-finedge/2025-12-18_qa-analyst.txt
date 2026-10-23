@@ -1,0 +1,5 @@
+SAMPLE job description for testing SkillBridge AI. Replace with real job descriptions.
+
+QA Analyst
+Functional testing of banking features. Write test cases and track defects in JIRA.
+Requirements: manual testing, SQL, API testing with Postman, Agile/Scrum.

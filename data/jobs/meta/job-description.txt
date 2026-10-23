@@ -1,0 +1,19 @@
+Meta
+Job Title: Software Engineer, Frontend / Web
+Company: Meta
+
+Location: Bangalore / Hyderabad / Remote
+
+Function: Engineering - Core Product & Web Infrastructure
+
+
+
+
+Minimum Qualifications
+Education: Bachelor’s degree in Computer Science, similar technical field, or equivalent practical experience.
+
+Technical Stack: Deep expertise in JavaScript (ES6+), TypeScript, HTML5, CSS3, and DOM internals.
+
+Framework Experience: Strong hands-on production experience with modern JavaScript frameworks, specifically React.js.
+
+CS Fundamentals: Strong grounding in Data Structures, Algorithms, software design patterns, and asynchronous programming.

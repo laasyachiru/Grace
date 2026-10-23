@@ -1,9 +1,9 @@
 [theme]
-base = "light"
-primaryColor = "#00899A"              # electric teal (deep enough for white button text)
-backgroundColor = "#FBF7EF"           # warm ivory
-secondaryBackgroundColor = "#F3ECDF"  # deeper ivory for sidebar, inputs, cards
-textColor = "#1C1B19"                 # soft black
+base = "dark"
+primaryColor = "#20A9B7"              # electric teal
+backgroundColor = "#1C1B19"           # warm charcoal
+secondaryBackgroundColor = "#282621"  # deeper charcoal for sidebar and inputs
+textColor = "#F4EFE4"                 # warm ivory
 font = "sans serif"
 
 [server]

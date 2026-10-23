@@ -32,7 +32,7 @@ def _q(text: str) -> str:
 
 
 def to_dot(path: list[str], have: set[str], done: set[str], focus: set[str]) -> str:
-    """Graphviz DOT for st.graphviz_chart, in the ivory / soft black / teal theme.
+    """Graphviz DOT for st.graphviz_chart, in the charcoal / warm ivory / teal theme.
     Teal tint = you know it, soft black = company wants it, deep ivory = learn first, teal = learned."""
     known = {p for sid in path for p in sk.prereqs(sid) if p in have}
     lines = [
@@ -40,18 +40,18 @@ def to_dot(path: list[str], have: set[str], done: set[str], focus: set[str]) -> 
         "  rankdir=LR; bgcolor=transparent; nodesep=0.4; ranksep=0.65; pad=0.2;",
         '  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=12, penwidth=1.2, margin="0.18,0.08"];',
         '  edge [color="#9C9384", arrowsize=0.7, penwidth=1.2];',
-        '  start [label="You today", shape=oval, fillcolor="#FBF7EF", color="#CDBFA8", fontcolor="#1C1B19"];',
-        '  goal [label="Company ready", shape=oval, fillcolor="#00899A", color="#16D3E2", penwidth=2, fontcolor="white"];',
+        '  start [label="You today", shape=oval, fillcolor="#282621", color="#716B5E", fontcolor="#F4EFE4"];',
+        '  goal [label="Company ready", shape=oval, fillcolor="#087E89", color="#16D3E2", penwidth=2, fontcolor="white"];',
     ]
     for sid in sorted(known):
-        lines.append(f"  {_q(sid)} [label={_q(sk.name(sid))}, fillcolor=\"#DDF5F6\", color=\"#7FD3DB\", fontcolor=\"#035E66\"];")
+        lines.append(f"  {_q(sid)} [label={_q(sk.name(sid))}, fillcolor=\"#18383B\", color=\"#4CBAC4\", fontcolor=\"#B4EDF0\"];")
     for i, sid in enumerate(path, 1):
         if sid in done:
-            fill, border, font = "#00899A", "#16D3E2", "white"
+            fill, border, font = "#087E89", "#16D3E2", "white"
         elif sid in focus:
-            fill, border, font = "#1C1B19", "#1C1B19", "#FBF7EF"
+            fill, border, font = "#34312A", "#706A5E", "#F4EFE4"
         else:
-            fill, border, font = "#F3ECDF", "#CDBFA8", "#5B4E3A"
+            fill, border, font = "#282621", "#716B5E", "#D8CFBE"
         lines.append(
             f"  {_q(sid)} [label={_q(f'{i}. {sk.name(sid)}')}, fillcolor=\"{fill}\", color=\"{border}\", fontcolor=\"{font}\"];"
         )
