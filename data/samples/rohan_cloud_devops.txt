@@ -1,0 +1,23 @@
+ROHAN MEHTA
+Junior Cloud and DevOps Engineer | Pune, India
+
+PROFILE
+Computer engineering graduate with hands-on practice deploying and monitoring small web services.
+
+SKILLS
+Linux, Bash, Git, GitHub Actions, CI/CD, Docker, Kubernetes, AWS, networking,
+Terraform, Ansible, Prometheus, Grafana, Python
+
+PROJECTS
+Containerized Task API
+- Built a small Python REST API and packaged it with Docker.
+- Deployed the service to a local Kubernetes cluster and configured health checks.
+- Added a GitHub Actions CI/CD workflow to run checks and build the container image.
+
+Cloud Infrastructure Lab
+- Used Terraform to provision a practice environment on AWS.
+- Wrote Ansible playbooks for repeatable Linux configuration.
+- Set up Prometheus and Grafana dashboards to observe service health.
+
+EDUCATION
+B.E. Computer Engineering, 2025

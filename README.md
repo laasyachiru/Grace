@@ -17,6 +17,7 @@ Colleges teach a fixed set of tools from year one, and students build their resu
 | 📡 **Company Skill Radar** | Reads a company's real job descriptions and shows what it expects, e.g. *AWS 100%, Docker 67%* |
 | 📈 **Hiring trends** | Every job description has a date, so you see which skills are rising or falling over time |
 | 🎯 **Focus list** | Compares your resume (and college subjects) with the company and ranks the top 5 skills to learn |
+| 👔 **Role selection** | Starts from the combined requirements in a company's job descriptions and filters them for a selected path, such as fresher, frontend, QA, DevOps, or engineering manager |
 | 🗺️ **Personal roadmap** | A roadmap.sh-style graph from what you know to what they want, prerequisites first |
 | 🔄 **Tool Translator** | The local AI explains how your current skills carry over to each new one |
 | ✅ **Progress tracker** | Tick skills as you learn them and watch your match score rise (like Codecademy) |
@@ -41,6 +42,8 @@ Company job descriptions (data/jobs/<company>/YYYY-MM-DD_role.txt)
         ▼
  Company profile: demand % per skill + trend per quarter
         │
+        ├── Role selection ──► role-relevant subset of skills supported by those job descriptions
+        │
 Your resume / subjects ──► your skills (editable in the UI)
         │
         ▼
@@ -49,6 +52,11 @@ Your resume / subjects ──► your skills (editable in the UI)
         ▼
  Roadmap (prerequisite map) ──► Graphviz graph + Tool Translator (local model) + free resources
 ```
+
+The role filter can use Ollama when the local model is enabled. It only selects from
+skills already detected in that company's job descriptions; it does not create new
+company requirements. If there are no postings for a selected role, add relevant job
+descriptions to that company's folder to provide evidence for the filter.
 
 ---
 

@@ -235,6 +235,14 @@ a:hover { border-bottom-color: var(--teal-bright); }
 .sb-legend .p::before { background: #282621; border: 1px solid #716B5E; }
 .sb-legend .d::before { background: #087E89; border: 1px solid #16D3E2; }
 
+/* ---------- context bar ---------- */
+.sb-ctx { display: flex; flex-wrap: wrap; gap: .5rem; margin: -.2rem 0 1.1rem; }
+.sb-ctx span { display: inline-flex; align-items: center; gap: .4rem; font-size: .84rem; padding: .32rem .75rem; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--card); color: var(--ink-soft); animation: sbFadeUp .5s cubic-bezier(.2,.8,.2,1) both; }
+.sb-ctx span b { color: var(--ink); font-weight: 600; }
+.sb-ctx span.on { color: var(--teal-bright); border-color: rgba(22,211,226,.35); background: var(--teal-tint); }
+.sb-ctx span.on::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--teal-bright); animation: sbGlow 2.4s ease-in-out infinite; }
+
 /* ---------- footer ---------- */
 .sb-footer { text-align: center; color: var(--ink-soft); font-size: .82rem; padding: 1.6rem 0 .4rem; }
 .sb-footer b { color: var(--teal-bright); }
@@ -337,6 +345,19 @@ def hero(title_start: str, title_accent: str, subtitle: str, badge: str) -> None
   <div class="sb-rule"></div>
 </div>
 """,
+        unsafe_allow_html=True,
+    )
+
+
+def context_bar(role: str, company: str, n_postings: int, ai_on: bool) -> None:
+    """Pills under the header: what the user is looking at right now."""
+    plural = "s" if n_postings != 1 else ""
+    mode = '<span class="on sb-d3">Local AI on</span>' if ai_on else '<span class="sb-d3">Keyword mode</span>'
+    st.markdown(
+        f'<div class="sb-ctx"><span>Role <b>{escape(role)}</b></span>'
+        f'<span class="sb-d1">Company <b>{escape(company)}</b></span>'
+        f'<span class="sb-d2"><b>{n_postings}</b> job description{plural}</span>'
+        f"{mode}</div>",
         unsafe_allow_html=True,
     )
 

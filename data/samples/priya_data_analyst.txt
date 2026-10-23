@@ -1,0 +1,22 @@
+PRIYA SHAH
+Computer Science graduate | Bengaluru, India
+
+PROFILE
+Entry-level data analyst focused on turning product data into clear, useful reporting.
+
+SKILLS
+Python, SQL, pandas, NumPy, data analysis, Power BI, Tableau, machine learning,
+scikit-learn, statistics, Git
+
+PROJECTS
+Retail Demand Dashboard
+- Cleaned and analyzed sample retail data with Python and pandas.
+- Used SQL queries and joins to investigate product and regional sales patterns.
+- Built a Power BI dashboard with monthly KPIs and filters for category and region.
+
+Customer Churn Study
+- Trained a scikit-learn classification model using a public learning dataset.
+- Compared model results with baseline metrics and summarized limitations.
+
+EDUCATION
+B.Sc. Computer Science, 2025

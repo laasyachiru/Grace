@@ -6,7 +6,7 @@ Phone on the same hotspot:  streamlit run app.py --server.address 0.0.0.0
 
 import streamlit as st
 
-from skillbridge import company, config, gap, llm, progress, roadmap, translator, ui
+from skillbridge import company, config, gap, llm, progress, roadmap, roles, translator, ui
 from skillbridge import skills as sk
 from skillbridge.extract import extract_skills
 from skillbridge.resume import read_path, read_upload
@@ -21,6 +21,13 @@ def cached_profile(name: str, use_ai: bool, sig: tuple, model: str) -> dict:
     return company.build_profile(name, use_ai=use_ai)
 
 
+@st.cache_data(show_spinner=False)
+def cached_role_skills(name: str, role: str, demand_items: tuple, titles: tuple,
+                       use_ai: bool, sig: tuple, model: str) -> list[str]:
+    demand = dict(demand_items)
+    return sorted(roles.filter_requirements(demand, role, list(titles), use_ai))
+
+
 def pct(x: float) -> str:
     return f"{round(x * 100)}%"
 
@@ -28,8 +35,15 @@ def pct(x: float) -> str:
 def sample_resumes() -> list:
     folder = config.SAMPLE_RESUME.parent
     files = sorted(p for p in folder.glob("*") if p.suffix.lower() in {".txt", ".md", ".pdf"}) if folder.exists() else []
-    # The original sample first, then the rest alphabetically.
-    return sorted(files, key=lambda p: (p.name != config.SAMPLE_RESUME.name, p.name.lower()))
+    # Only offer examples that can produce skills from the fixed catalog.
+    usable = []
+    for path in files:
+        try:
+            if sk.find_by_keyword(read_path(path)):
+                usable.append(path)
+        except Exception:
+            continue
+    return sorted(usable, key=lambda p: (p.name != config.SAMPLE_RESUME.name, p.name.lower()))
 
 
 def resume_label(path) -> str:
@@ -82,7 +96,7 @@ with st.sidebar:
         llm.is_available.cache_clear()
         st.rerun()
     use_ai = st.toggle("Use AI extraction", value=ai_ok, disabled=not ai_ok,
-                       help="Off = fast keyword matching only. On = the local model also finds implied skills.")
+                       help="On = the local model finds implied skills and tailors company requirements to the selected role.")
 
     companies = company.list_companies()
     if not companies:
@@ -91,6 +105,8 @@ with st.sidebar:
     real_first = sorted(companies, key=lambda c: (c.startswith("sample-"), c))
     target = st.selectbox("🎯 Target company", real_first, format_func=company.display_name)
     target_label = company.display_name(target)
+    target_role = st.selectbox("👔 Role", roles.ROLE_OPTIONS,
+                               help="Requirements are filtered from the skills found in this company's job descriptions.")
 
     st.divider()
     st.header("👤 You")
@@ -100,6 +116,7 @@ with st.sidebar:
     chosen_sample = None
     if use_sample and samples and uploaded is None:
         chosen_sample = st.selectbox("Sample resume", samples, format_func=resume_label)
+        st.caption("Only samples with skills recognized by the catalog are listed.")
     syllabus = st.text_area("College subjects / extra skills (optional)",
                             placeholder="e.g. Software Testing, DBMS, Java Programming, Linux lab")
 
@@ -116,7 +133,10 @@ with st.sidebar:
             with st.spinner("Reading your resume with the local model…" if use_ai else "Matching skills…"):
                 found = extract_skills(text, use_ai=use_ai)
             st.session_state["my_skills"] = sorted(found, key=lambda s: sk.name(s).lower())
-            st.toast(f"Found {len(found)} skills", icon="✨")
+            if found:
+                st.toast(f"Found {len(found)} skills", icon="✨")
+            else:
+                st.warning("No skills from the catalog were detected. Choose a technical sample or add your skills in the list below.")
 
     st.multiselect("Your skills (fix anything the AI missed)", options=sk.all_ids(),
                    format_func=sk.name, key="my_skills")
@@ -139,8 +159,29 @@ ui.hero(
     badge="Open-source · Local AI · Private",
 )
 
+ui.context_bar(target_role, target_label, len(company.load_postings(target)), bool(use_ai))
+
 with st.spinner(f"Reading {target_label}'s job descriptions with the local model (first time only)…"):
-    profile = cached_profile(target, use_ai, company.signature(target), config.MODEL)
+    company_profile = cached_profile(target, use_ai, company.signature(target), config.MODEL)
+
+with st.spinner(f"Tailoring requirements for {target_role}…"):
+    role_skill_ids = cached_role_skills(
+        target, target_role, tuple(company_profile["demand"].items()),
+        tuple(p["title"] for p in company_profile["postings"]), use_ai,
+        company.signature(target), config.MODEL,
+    )
+
+profile = dict(company_profile)
+profile["demand"] = {
+    sid: weight for sid, weight in company_profile["demand"].items() if sid in role_skill_ids
+}
+profile["trend"] = company_profile["trend"].reindex(
+    columns=[sid for sid in company_profile["trend"].columns if sid in role_skill_ids]
+)
+profile["postings"] = [
+    {**posting, "skills": [sid for sid in posting["skills"] if sid in role_skill_ids]}
+    for posting in company_profile["postings"]
+]
 
 if target.startswith("sample-"):
     st.info("You're viewing **sample** job descriptions included for testing. Add real ones in `data/jobs/` (see README).")
@@ -152,9 +193,12 @@ tab_radar, tab_gap, tab_road = st.tabs(["📡 Company Radar", "🎯 My Gap", "�
 
 # ======================= Tab 1: Company Radar =======================
 with tab_radar:
-    ui.section_title(f"What {target_label} expects")
+    ui.section_title(f"{target_role} requirements at {target_label}")
+    st.caption("Filtered from the combined requirements evidenced by the job descriptions currently in the project. The AI can only select skills already found in that company's postings.")
+    if not profile["demand"]:
+        st.info(f"The current {target_label} job descriptions do not contain catalog skills for **{target_role}**. Add postings for this role, or choose another role / company-wide requirements.")
     c1, c2, c3 = st.columns(3)
-    c1.metric("Job descriptions analysed", profile["n_postings"])
+    c1.metric("Company job descriptions analysed", profile["n_postings"])
     if profile["first_date"]:
         same = profile["first_date"] == profile["last_date"]
         c2.metric("Posted", f"{profile['first_date']:%b %Y}" if same
@@ -198,7 +242,8 @@ with tab_gap:
     if not my_skills and not done:
         st.info("👈 Pick a sample resume (or upload yours) and click **Analyze my skills**.")
     else:
-        ui.score_ring(result.score, target_label, delta=result.score - base.score, n_focus=len(result.focus))
+        ui.score_ring(result.score, f"{target_role} · {target_label}",
+                      delta=result.score - base.score, n_focus=len(result.focus))
 
         left, right = st.columns(2)
         with left:
@@ -230,7 +275,7 @@ with tab_road:
         st.info("👈 Analyze your skills first to get a personal roadmap.")
     else:
         path = roadmap.learning_path(base.focus, my_skills)
-        ui.section_title(f"Your path to {target_label}")
+        ui.section_title(f"Your path to {target_role} at {target_label}")
         st.graphviz_chart(roadmap.to_dot(path, my_skills, done, set(base.focus)), use_container_width=True)
         ui.roadmap_legend()
 

@@ -1,0 +1,23 @@
+SARA FERNANDES
+Backend Developer | Hyderabad, India
+
+PROFILE
+Early-career software developer building reliable APIs and database-backed applications.
+
+SKILLS
+Java, Spring Boot, REST APIs, GraphQL, PostgreSQL, MySQL, SQL, Redis, Kafka,
+Docker, Git, unit testing, system design, networking, security basics
+
+PROJECTS
+Campus Events Service
+- Developed REST APIs with Java and Spring Boot for event listings and registration.
+- Stored event and registration data in PostgreSQL and added Redis caching for popular listings.
+- Wrote unit tests and documented API behavior for a small student client app.
+
+Order Updates Prototype
+- Designed an event-driven order update flow using Kafka.
+- Added a GraphQL endpoint for querying order status and a Docker development setup.
+- Reviewed authentication and input validation practices for the API.
+
+EDUCATION
+B.Tech. Information Technology, 2024
