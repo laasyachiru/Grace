@@ -1,5 +1,0 @@
-SAMPLE job description for testing SkillBridge AI. Replace with real job descriptions.
-
-SDET
-Build test automation for our APIs and web app.
-Requirements: Java or Python, Selenium, REST Assured / Postman API testing, Git, CI/CD with Jenkins, SQL.

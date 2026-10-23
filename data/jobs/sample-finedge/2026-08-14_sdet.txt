@@ -1,5 +1,0 @@
-SAMPLE job description for testing SkillBridge AI. Replace with real job descriptions.
-
-SDET
-Own automated testing in CI/CD pipelines.
-Requirements: Playwright, TypeScript, Python, API testing, Docker, GitHub Actions, performance testing with k6, SQL.

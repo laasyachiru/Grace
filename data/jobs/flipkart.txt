@@ -1,0 +1,14 @@
+Job Title: Software Engineer - UI / Frontend Development
+Company: Flipkart
+
+Location: Bangalore, Karnataka, India
+
+Function: Engineering - Consumer Experience & Platform
+
+
+
+Requirements & Technical SkillsEducation: Bachelor’s degree in Computer Science, Information Technology, or a related engineering discipline.Core Technical Stack:Deep expertise in JavaScript (ES6+), TypeScript, HTML5, and CSS3.Strong foundational understanding of DOM manipulation, asynchronous programming, and functional/object-oriented programming.Framework Experience: Hands-on experience with modern JavaScript frameworks/libraries (such as React.js, Vue, or Angular).   Computer Science Fundamentals: Solid grasp of Data Structures, Algorithms, browser internals, caching strategies, and web security principles.Tooling & Version Control: Familiarity with modern frontend build tools (Webpack, Vite, Babel) and version control systems like Git.Mindset: High ownership, a strong bias for action, and an ability to solve complex technical challenges in a fast-paced, high-scale product environment.
+
+
+
+

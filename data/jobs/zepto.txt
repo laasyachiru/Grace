@@ -1,0 +1,21 @@
+Company 1: Zepto
+Job Title: Software Engineer - Frontend / UI
+Company: Zepto
+
+Location: Bangalore, Karnataka, India
+
+Function: Engineering - Consumer & Growth Platforms
+
+Requirements & Technical Skills
+Education: Bachelor’s degree in Computer Science or a related technical field.
+
+Core Tech Stack:
+
+Deep expertise in JavaScript (ES6+), TypeScript, HTML5, and CSS3.
+
+Strong hands-on experience building single-page or server-rendered applications using React.js / Next.js.
+
+Architecture & State: Familiarity with modern state management tools and asynchronous data-fetching patterns.
+
+Engineering Mindset: Strong grasp of computer science fundamentals, DOM mechanics, browser caching, and an ability to thrive in a fast-paced, high-ownership startup environment.
+

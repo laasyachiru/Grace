@@ -1,5 +1,0 @@
-SAMPLE job description for testing SkillBridge AI. Replace with real job descriptions.
-
-DevOps Engineer
-Build CI/CD pipelines with GitHub Actions and Jenkins. Containerize services with Docker.
-Requirements: Linux, Git, Docker, AWS, Python scripting, monitoring with Grafana.

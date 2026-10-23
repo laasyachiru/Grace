@@ -1,0 +1,44 @@
+AARON PANDELL
+999-999-999 | hello@kickresume.com | www.kickresume.com
+
+PROFILE
+- Detail-oriented and results-driven software engineer with over 3 years of industry experience. Currently pursuing a graduate degree in computer engineering from the University of South Florida.
+
+WORK EXPERIENCE
+
+System Engineer
+Tata Consultancy Services
+11/2020 - 08/2022 | India
+- Provided technical support to colleagues and key clients, admitting to addressing ad hoc requests, while also delivering effective training to new trainees.
+- Leveraged data insights to implement Editable templates, content fragments, and Experience fragments for personalized content delivery, increasing user engagement by 15%.
+- Utilized SQL for in-depth user data analysis, effectively discovering and preventing spam hits from form submissions, resulting in a substantial 40% reduction in spam incidents.
+- Managed AEM administrative tasks, including user permissions, authoring, DAM, multi-site management, dispatcher, and workflow handling. Led successful migration to AWS cloud, achieving 40% scalability improvement and 30% system performance enhancement.
+- Collaborated closely with cross-functional teams to identify and resolve component and data quality issues, ensuring data integrity and consistency throughout the organization.
+- Employed Tableau for data analysis, creating essential metrics and KPIs to track progress across various requests and drive a significant 15% improvement in team productivity.
+
+Student Instructor Learning Assistant
+University of South Florida
+12/2022 - 04/2023 | Tampa
+- Performing predictive analytics and designing reports on the University student data using PowerBI
+- Work involves data analysis, Web scraping using Python, Data warehouse management, and Data modeling.
+
+Software developer (intern)
+Indian Railways
+12/2019 - 06/2020 | India
+- Enhanced asset management with IoT sensors and data analytics, reducing maintenance costs by 20% and increasing asset uptime by 15%.
+- Played a key role in the software development lifecycle for the train tracking feature, following Agile methodology and utilizing Git, Jira, ServiceNow, Confluence, and Jenkins.
+- Elevated user satisfaction by integrating customer feedback, leading to a notable 20% rise in positive customer reviews.
+
+EDUCATION
+Computer Science | Graduate
+University of South Florida
+08/2022 - 08/2024 | Tampa, USA
+Coursework: Algorithms, Computer Architecture, Cloud Computing (AWS), AI, Data Mining, ML, and DBMS
+
+SKILLS
+Programming Language: Python, Java, C, SQL, Html, CSS, Javascript
+Libraries: Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, TensorFlow, Keras
+Softwares: Tableau, Power BI, Excel, Visual Studio, Salesforce, Adobe Experience Manager (AEM), and AWS
+
+CERTIFICATIONS
+2023 - Machine Learning by Stanford University

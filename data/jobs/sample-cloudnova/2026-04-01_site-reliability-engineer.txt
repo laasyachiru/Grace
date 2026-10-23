@@ -1,5 +1,0 @@
-SAMPLE job description for testing SkillBridge AI. Replace with real job descriptions.
-
-Site Reliability Engineer
-Own reliability of microservices running on Kubernetes (EKS).
-Requirements: Docker, Kubernetes, Prometheus/Grafana, AWS, Terraform, Linux, on-call incident management.

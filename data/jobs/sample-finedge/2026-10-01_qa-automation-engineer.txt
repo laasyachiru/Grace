@@ -1,5 +1,0 @@
-SAMPLE job description for testing SkillBridge AI. Replace with real job descriptions.
-
-QA Automation Engineer
-Shift-left testing for microservices.
-Requirements: test automation, Playwright, Python, pytest, API testing, Docker, CI/CD, Git, AWS basics.

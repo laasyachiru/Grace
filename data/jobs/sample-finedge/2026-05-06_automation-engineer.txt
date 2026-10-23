@@ -1,5 +1,0 @@
-SAMPLE job description for testing SkillBridge AI. Replace with real job descriptions.
-
-Automation Engineer
-Modernize our test stack from Selenium to Playwright.
-Requirements: Playwright, JavaScript or TypeScript, API testing, Git, CI/CD with GitHub Actions, Docker basics.

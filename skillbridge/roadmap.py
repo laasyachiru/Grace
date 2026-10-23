@@ -32,27 +32,29 @@ def _q(text: str) -> str:
 
 
 def to_dot(path: list[str], have: set[str], done: set[str], focus: set[str]) -> str:
-    """Graphviz DOT for st.graphviz_chart.
-    Green = you know it, blue = learned (ticked), red = company wants it, amber = prerequisite to learn first."""
+    """Graphviz DOT for st.graphviz_chart, in the ivory / soft black / teal theme.
+    Teal tint = you know it, soft black = company wants it, deep ivory = learn first, teal = learned."""
     known = {p for sid in path for p in sk.prereqs(sid) if p in have}
     lines = [
         "digraph roadmap {",
-        "  rankdir=LR; bgcolor=transparent; nodesep=0.35; ranksep=0.6;",
-        '  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=12, penwidth=0];',
-        '  edge [color="#8a8f98", arrowsize=0.7];',
-        '  start [label="You today", shape=oval, fillcolor="#e8eaf0", fontcolor="#333333"];',
-        '  goal [label="Company ready", shape=oval, fillcolor="#1f2937", fontcolor="white"];',
+        "  rankdir=LR; bgcolor=transparent; nodesep=0.4; ranksep=0.65; pad=0.2;",
+        '  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=12, penwidth=1.2, margin="0.18,0.08"];',
+        '  edge [color="#9C9384", arrowsize=0.7, penwidth=1.2];',
+        '  start [label="You today", shape=oval, fillcolor="#FBF7EF", color="#CDBFA8", fontcolor="#1C1B19"];',
+        '  goal [label="Company ready", shape=oval, fillcolor="#00899A", color="#16D3E2", penwidth=2, fontcolor="white"];',
     ]
     for sid in sorted(known):
-        lines.append(f"  {_q(sid)} [label={_q(sk.name(sid))}, fillcolor=\"#d1fae5\", fontcolor=\"#065f46\"];")
+        lines.append(f"  {_q(sid)} [label={_q(sk.name(sid))}, fillcolor=\"#DDF5F6\", color=\"#7FD3DB\", fontcolor=\"#035E66\"];")
     for i, sid in enumerate(path, 1):
         if sid in done:
-            fill, font = "#dbeafe", "#1e3a8a"
+            fill, border, font = "#00899A", "#16D3E2", "white"
         elif sid in focus:
-            fill, font = "#fee2e2", "#991b1b"
+            fill, border, font = "#1C1B19", "#1C1B19", "#FBF7EF"
         else:
-            fill, font = "#fef3c7", "#92400e"
-        lines.append(f"  {_q(sid)} [label={_q(f'{i}. {sk.name(sid)}')}, fillcolor=\"{fill}\", fontcolor=\"{font}\"];")
+            fill, border, font = "#F3ECDF", "#CDBFA8", "#5B4E3A"
+        lines.append(
+            f"  {_q(sid)} [label={_q(f'{i}. {sk.name(sid)}')}, fillcolor=\"{fill}\", color=\"{border}\", fontcolor=\"{font}\"];"
+        )
 
     shown = set(path) | known
     for sid in path:

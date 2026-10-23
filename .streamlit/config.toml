@@ -1,0 +1,10 @@
+[theme]
+base = "light"
+primaryColor = "#00899A"              # electric teal (deep enough for white button text)
+backgroundColor = "#FBF7EF"           # warm ivory
+secondaryBackgroundColor = "#F3ECDF"  # deeper ivory for sidebar, inputs, cards
+textColor = "#1C1B19"                 # soft black
+font = "sans serif"
+
+[server]
+runOnSave = true                      # app refreshes automatically when you save a file

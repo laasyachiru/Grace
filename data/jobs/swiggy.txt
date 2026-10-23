@@ -1,0 +1,25 @@
+Job Title: Frontend Engineer
+Company: Swiggy
+
+Location: Bangalore, Karnataka, India
+
+Function: Software Engineering – Frontend Development
+
+
+
+Requirements & Technical Skills
+Education: Bachelor’s degree in Computer Science, Information Technology, or a related technical discipline.
+
+Core Stack:
+
+Deep proficiency in JavaScript (ES6+), TypeScript, HTML5, and CSS3.
+
+Strong expertise building modern applications using React.js and React-based frameworks (like Next.js for SSR/SSG).   
+Instahyre
+
+State & Ecosystem: Experience with state management tools (such as Redux, Zustand, or Recoil).   
+Instahyre
+
+Engineering Principles: Strong command of Computer Science fundamentals, data structures, asynchronous programming, DOM mechanics, and browser rendering pipelines.
+
+Domain Exposure: Prior project or industry experience in e-commerce, food-tech, logistics, or high-throughput consumer-facing web apps is a strong plus.

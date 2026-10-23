@@ -6,12 +6,13 @@ Phone on the same hotspot:  streamlit run app.py --server.address 0.0.0.0
 
 import streamlit as st
 
-from skillbridge import company, config, gap, llm, progress, roadmap, translator
+from skillbridge import company, config, gap, llm, progress, roadmap, translator, ui
 from skillbridge import skills as sk
 from skillbridge.extract import extract_skills
 from skillbridge.resume import read_path, read_upload
 
 st.set_page_config(page_title="SkillBridge AI", page_icon="🌉", layout="wide")
+ui.apply_theme()
 
 
 @st.cache_data(show_spinner=False)
@@ -81,9 +82,12 @@ my_skills = set(st.session_state.get("my_skills", []))
 done = progress.load_done()
 
 # ---------------- Header ----------------
-st.title("🌉 SkillBridge AI")
-st.caption("Your personal roadmap to the company you want, built from what they're actually hiring for. "
-           "Runs 100% locally on an open model: your resume never leaves this device.")
+ui.hero(
+    "SkillBridge", "AI",
+    "Your personal roadmap to the company you want, built from what they're actually hiring for. "
+    "Runs 100% locally on an open model: your resume never leaves this device.",
+    badge="Open-source · Local AI · Private",
+)
 
 with st.spinner(f"Reading {target_label}'s job descriptions with the local model (first time only)…"):
     profile = cached_profile(target, use_ai, company.signature(target), config.MODEL)
@@ -153,7 +157,8 @@ with tab_gap:
             st.markdown("### ✅ You already have")
             for sid in result.matched:
                 tag = " (learned)" if sid in done and sid not in my_skills else ""
-                st.markdown(f":green[●] **{sk.name(sid)}**{tag}, asked in {pct(profile['demand'][sid])}")
+                st.markdown(f"<span style='color:{ui.PALETTE['teal']}'>●</span> **{sk.name(sid)}**{tag}, "
+                            f"asked in {pct(profile['demand'][sid])}", unsafe_allow_html=True)
             if not result.matched:
                 st.caption("None of the company's core skills yet. The roadmap fixes that.")
         with right:
@@ -167,9 +172,11 @@ with tab_gap:
 
         others = result.missing[len(result.focus):]
         if others:
-            st.caption("Also asked, lower priority: " + ", ".join(sk.name(s) for s in others))
+            st.markdown("**Also asked, lower priority**")
+            ui.chips([sk.name(s) for s in others])
         if result.extra:
-            st.caption("Your extra strengths this company doesn't ask for: " + ", ".join(sk.name(s) for s in result.extra))
+            st.markdown("**Your extra strengths** (this company doesn't ask for them)")
+            ui.chips([sk.name(s) for s in result.extra], have=True)
 
 # ---------------- Tab 3: My Roadmap ----------------
 with tab_road:
@@ -179,7 +186,7 @@ with tab_road:
         path = roadmap.learning_path(base.focus, my_skills)
         st.subheader(f"Your path to {target_label}")
         st.graphviz_chart(roadmap.to_dot(path, my_skills, done, set(base.focus)), use_container_width=True)
-        st.caption("🟩 you know it · 🟥 company wants it · 🟨 learn this first · 🟦 learned")
+        ui.roadmap_legend()
 
         for i, sid in enumerate(path, 1):
             status = "✅ " if sid in done else ""
@@ -203,5 +210,4 @@ with tab_road:
                     else:
                         st.markdown(translator.fallback(sid, my_skills | done))
 
-st.divider()
-st.caption("SkillBridge AI · MIT licensed · Open-weight model via Ollama · No data leaves this device")
+ui.footer()

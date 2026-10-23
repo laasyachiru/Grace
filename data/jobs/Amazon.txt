@@ -1,0 +1,23 @@
+Job Title: Front End Engineer / Software Development Engineer - Frontend
+Company: Amazon
+
+Location: Bangalore, Karnataka, India
+
+Function: Consumer Software Engineering & Shopping Experience
+
+
+
+Requirements & Technical Skills
+Education: Bachelor’s degree in Computer Science, Computer Engineering, or a related technical discipline.
+
+Technical Stack:
+
+Expert proficiency in core web technologies: JavaScript (ES6+), TypeScript, HTML5, and CSS3.
+
+Hands-on professional or project experience with modern frontend frameworks/libraries (such as React.js, Angular, or Vue).
+
+Core Fundamentals: Strong command of computer science fundamentals, including Data Structures & Algorithms, object-oriented/functional programming, asynchronous programming, and browser DOM performance mechanics.
+
+Web Standards: Solid understanding of cross-browser compatibility, web security best practices, and responsive mobile-first design principles.
+
+Problem-Solving: High analytical capability with a bias for action and a passion for building customer-facing systems that handle massive traffic scales.

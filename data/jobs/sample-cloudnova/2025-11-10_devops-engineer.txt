@@ -1,6 +1,0 @@
-SAMPLE job description for testing SkillBridge AI. Replace with real job descriptions.
-
-DevOps Engineer
-We are looking for an engineer to maintain our build and release process.
-Requirements: Linux administration, Bash scripting, Jenkins pipelines, Git, AWS (EC2, S3), MySQL.
-Nice to have: Ansible, Python.

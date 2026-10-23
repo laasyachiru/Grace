@@ -1,5 +1,0 @@
-SAMPLE job description for testing SkillBridge AI. Replace with real job descriptions.
-
-Platform Engineer
-Design infrastructure as code with Terraform. Run Kubernetes clusters and Helm charts.
-Requirements: Kubernetes, Docker, Terraform, AWS, GitHub Actions CI/CD, Python, observability.
