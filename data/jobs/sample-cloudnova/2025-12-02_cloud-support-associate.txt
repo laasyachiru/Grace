@@ -1,0 +1,5 @@
+SAMPLE job description for testing SkillBridge AI. Replace with real job descriptions.
+
+Cloud Support Associate
+Support customer workloads on AWS. Troubleshooting production issues, monitoring with CloudWatch.
+Requirements: Linux, networking (TCP/IP, DNS), AWS, SQL. Jenkins exposure is a plus.

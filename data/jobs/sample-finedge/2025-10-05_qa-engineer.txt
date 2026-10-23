@@ -1,0 +1,5 @@
+SAMPLE job description for testing SkillBridge AI. Replace with real job descriptions.
+
+QA Engineer
+Test our payments web app.
+Requirements: manual testing, test case design, regression testing, Selenium WebDriver, Java, SQL, JIRA, Agile.
