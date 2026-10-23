@@ -11,7 +11,7 @@ from skillbridge import skills as sk
 from skillbridge.extract import extract_skills
 from skillbridge.resume import read_path, read_upload
 
-st.set_page_config(page_title="SkillBridge AI", page_icon="🌉", layout="wide")
+st.set_page_config(page_title="SkillBridge AI", page_icon="🌉", layout="wide", initial_sidebar_state="expanded")
 ui.apply_theme()
 
 
@@ -25,8 +25,50 @@ def pct(x: float) -> str:
     return f"{round(x * 100)}%"
 
 
-# ---------------- Sidebar: setup + inputs ----------------
+def sample_resumes() -> list:
+    folder = config.SAMPLE_RESUME.parent
+    files = sorted(p for p in folder.glob("*") if p.suffix.lower() in {".txt", ".md", ".pdf"}) if folder.exists() else []
+    # The original sample first, then the rest alphabetically.
+    return sorted(files, key=lambda p: (p.name != config.SAMPLE_RESUME.name, p.name.lower()))
+
+
+def resume_label(path) -> str:
+    return "Sample student (testing)" if path.name == config.SAMPLE_RESUME.name else path.stem.replace("_", " ").title()
+
+
+if "page" not in st.session_state:
+    st.session_state["page"] = "landing"
+
+# ======================= Landing page =======================
+if st.session_state["page"] == "landing":
+    ui.landing_mode()
+    all_companies = company.list_companies()
+    real = [c for c in all_companies if not c.startswith("sample-")] or all_companies
+    n_postings = sum(len(company.load_postings(c)) for c in real)
+    ui.landing_hero(len(real), len(sk.all_ids()), n_postings)
+
+    _, mid, _ = st.columns([1.2, 1, 1.2])
+    with mid:
+        if st.button("Get started  →", type="primary", use_container_width=True):
+            st.session_state["page"] = "app"
+            st.rerun()
+
+    ui.landing_sections()
+
+    _, mid2, _ = st.columns([1.2, 1, 1.2])
+    with mid2:
+        if st.button("Build my roadmap  →", type="primary", use_container_width=True, key="cta_bottom"):
+            st.session_state["page"] = "app"
+            st.rerun()
+    ui.footer()
+    st.stop()
+
+# ======================= Sidebar: setup + inputs =======================
 with st.sidebar:
+    if st.button("←  Home", use_container_width=True):
+        st.session_state["page"] = "landing"
+        st.rerun()
+
     st.header("⚙️ Setup")
     available = llm.is_available()
     ai_ok = available and llm.model_installed()
@@ -46,13 +88,18 @@ with st.sidebar:
     if not companies:
         st.error("No job descriptions found. Add files to data/jobs/<company>/ (see README).")
         st.stop()
-    target = st.selectbox("🎯 Target company", companies, format_func=company.display_name)
+    real_first = sorted(companies, key=lambda c: (c.startswith("sample-"), c))
+    target = st.selectbox("🎯 Target company", real_first, format_func=company.display_name)
     target_label = company.display_name(target)
 
     st.divider()
     st.header("👤 You")
     uploaded = st.file_uploader("Resume (PDF or TXT)", type=["pdf", "txt", "md"])
-    use_sample = st.checkbox("Use sample resume", value=uploaded is None)
+    samples = sample_resumes()
+    use_sample = st.checkbox("Use a sample resume", value=uploaded is None, disabled=not samples)
+    chosen_sample = None
+    if use_sample and samples and uploaded is None:
+        chosen_sample = st.selectbox("Sample resume", samples, format_func=resume_label)
     syllabus = st.text_area("College subjects / extra skills (optional)",
                             placeholder="e.g. Software Testing, DBMS, Java Programming, Linux lab")
 
@@ -60,15 +107,16 @@ with st.sidebar:
         text = ""
         if uploaded is not None:
             text = read_upload(uploaded)
-        elif use_sample and config.SAMPLE_RESUME.exists():
-            text = read_path(config.SAMPLE_RESUME)
+        elif chosen_sample is not None:
+            text = read_path(chosen_sample)
         text = f"{text}\n{syllabus}".strip()
         if not text:
-            st.warning("Upload a resume, tick 'Use sample resume' or type your subjects first.")
+            st.warning("Upload a resume, pick a sample resume or type your subjects first.")
         else:
             with st.spinner("Reading your resume with the local model…" if use_ai else "Matching skills…"):
                 found = extract_skills(text, use_ai=use_ai)
             st.session_state["my_skills"] = sorted(found, key=lambda s: sk.name(s).lower())
+            st.toast(f"Found {len(found)} skills", icon="✨")
 
     st.multiselect("Your skills (fix anything the AI missed)", options=sk.all_ids(),
                    format_func=sk.name, key="my_skills")
@@ -80,8 +128,10 @@ with st.sidebar:
 
 my_skills = set(st.session_state.get("my_skills", []))
 done = progress.load_done()
+if st.session_state.pop("celebrate", False):
+    st.balloons()
 
-# ---------------- Header ----------------
+# ======================= Header =======================
 ui.hero(
     "SkillBridge", "AI",
     "Your personal roadmap to the company you want, built from what they're actually hiring for. "
@@ -100,13 +150,15 @@ base = gap.analyze(profile["demand"], my_skills)
 
 tab_radar, tab_gap, tab_road = st.tabs(["📡 Company Radar", "🎯 My Gap", "🗺️ My Roadmap"])
 
-# ---------------- Tab 1: Company Radar ----------------
+# ======================= Tab 1: Company Radar =======================
 with tab_radar:
-    st.subheader(f"What {target_label} expects")
+    ui.section_title(f"What {target_label} expects")
     c1, c2, c3 = st.columns(3)
     c1.metric("Job descriptions analysed", profile["n_postings"])
     if profile["first_date"]:
-        c2.metric("Date range", f"{profile['first_date']:%b %Y} – {profile['last_date']:%b %Y}")
+        same = profile["first_date"] == profile["last_date"]
+        c2.metric("Posted", f"{profile['first_date']:%b %Y}" if same
+                  else f"{profile['first_date']:%b %Y} – {profile['last_date']:%b %Y}")
     c3.metric("Skills detected", len(profile["demand"]))
 
     st.dataframe(
@@ -117,7 +169,7 @@ with tab_radar:
             "Asked in % of job descriptions", min_value=0, max_value=100, format="%d%%")},
     )
 
-    st.subheader("How it's changing")
+    ui.section_title("How it's changing")
     trend = company.trend_frame(profile)
     if len(trend.index) >= 2:
         st.line_chart(trend, y_label="% of job descriptions", x_label="Quarter")
@@ -125,68 +177,66 @@ with tab_radar:
         r, f = st.columns(2)
         with r:
             st.markdown("**📈 Rising**")
-            for sid, v in rising[:5] or []:
-                st.markdown(f"- {sk.name(sid)} (+{pct(v)})")
+            ui.chips([f"{sk.name(s)}  +{pct(v)}" for s, v in rising[:5]], have=True)
             if not rising:
                 st.caption("No big risers yet.")
         with f:
             st.markdown("**📉 Falling**")
-            for sid, v in falling[:5] or []:
-                st.markdown(f"- {sk.name(sid)} ({pct(v)})")
+            ui.chips([f"{sk.name(s)}  {pct(v)}" for s, v in falling[:5]])
             if not falling:
                 st.caption("No big fallers yet.")
     else:
-        st.caption("Add job descriptions from different months to see trends.")
+        st.caption("Add job descriptions from different months (named YYYY-MM-DD_role.txt) to see trends.")
 
     with st.expander(f"Job descriptions used ({profile['n_postings']})"):
         for p in profile["postings"]:
-            st.markdown(f"**{p['date']} · {p['title']}**  \n{', '.join(sk.names(p['skills'])) or '_no skills found_'}")
+            st.markdown(f"**{p['date']} · {p['title']}**")
+            ui.chips(sk.names(p["skills"]))
 
-# ---------------- Tab 2: My Gap ----------------
+# ======================= Tab 2: My Gap =======================
 with tab_gap:
     if not my_skills and not done:
-        st.info("👈 Upload your resume (or use the sample) and click **Analyze my skills**.")
+        st.info("👈 Pick a sample resume (or upload yours) and click **Analyze my skills**.")
     else:
-        delta = result.score - base.score
-        st.metric(f"Your match with {target_label}", f"{result.score}%",
-                  delta=f"+{delta}% from skills you've learned" if delta > 0 else None)
-        st.progress(result.score / 100)
+        ui.score_ring(result.score, target_label, delta=result.score - base.score, n_focus=len(result.focus))
 
         left, right = st.columns(2)
         with left:
-            st.markdown("### ✅ You already have")
-            for sid in result.matched:
-                tag = " (learned)" if sid in done and sid not in my_skills else ""
-                st.markdown(f"<span style='color:{ui.PALETTE['teal']}'>●</span> **{sk.name(sid)}**{tag}, "
-                            f"asked in {pct(profile['demand'][sid])}", unsafe_allow_html=True)
+            ui.section_title("You already have")
+            ui.chips([sk.name(s) + (" (learned)" if s in done and s not in my_skills else "") for s in result.matched], have=True)
             if not result.matched:
                 st.caption("None of the company's core skills yet. The roadmap fixes that.")
         with right:
-            st.markdown(f"### 🎯 Focus only on these {len(result.focus)}")
-            for i, sid in enumerate(result.focus, 1):
-                res = sk.resources(sid)
-                link = f" · [start here]({res[0]['url']})" if res else ""
-                st.markdown(f"**{i}. {sk.name(sid)}**, asked in {pct(profile['demand'][sid])}{link}")
+            ui.section_title(f"Focus only on these {len(result.focus)}")
+            ui.focus_cards([
+                {"name": sk.name(s), "demand": profile["demand"][s],
+                 "url": (sk.resources(s) or [{}])[0].get("url")}
+                for s in result.focus
+            ])
             if not result.focus:
                 st.success("You cover everything this company commonly asks for! 🎉")
 
         others = result.missing[len(result.focus):]
         if others:
-            st.markdown("**Also asked, lower priority**")
+            ui.section_title("Also asked, lower priority")
             ui.chips([sk.name(s) for s in others])
         if result.extra:
-            st.markdown("**Your extra strengths** (this company doesn't ask for them)")
+            ui.section_title("Your extra strengths")
             ui.chips([sk.name(s) for s in result.extra], have=True)
 
-# ---------------- Tab 3: My Roadmap ----------------
+# ======================= Tab 3: My Roadmap =======================
 with tab_road:
     if not my_skills and not done:
         st.info("👈 Analyze your skills first to get a personal roadmap.")
     else:
         path = roadmap.learning_path(base.focus, my_skills)
-        st.subheader(f"Your path to {target_label}")
+        ui.section_title(f"Your path to {target_label}")
         st.graphviz_chart(roadmap.to_dot(path, my_skills, done, set(base.focus)), use_container_width=True)
         ui.roadmap_legend()
+
+        if path:
+            learned = sum(1 for s in path if s in done)
+            st.progress(learned / len(path), text=f"{learned} of {len(path)} steps learned")
 
         for i, sid in enumerate(path, 1):
             status = "✅ " if sid in done else ""
@@ -202,6 +252,7 @@ with tab_road:
                 checked = st.checkbox("I've learned this", value=sid in done, key=f"done_{sid}")
                 if checked != (sid in done):
                     progress.set_done(sid, checked)
+                    st.session_state["celebrate"] = checked
                     st.rerun()
 
                 if st.button("🔄 Tool Translator: how does what I know help?", key=f"tt_{sid}"):
